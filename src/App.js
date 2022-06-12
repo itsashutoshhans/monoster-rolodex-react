@@ -19,7 +19,13 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <p>Hello! {this.state.name}</p>
-          <button>Change Name</button>
+          <button onClick={() => {
+            // react detects change by using javascript's underlying reference by memory for an object
+            // essentialy if we change this.state = 'some value', it still points to the same reference and react doesn't think it as a change
+            // that means there should be a different object altogether - ex. Object.assign
+            // setState is the answer, it shallow merges the current state
+            this.setState({name: 'Vishal'})
+          }}>Change Name</button>
         </header>
       </div>
     );
