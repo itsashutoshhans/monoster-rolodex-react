@@ -1,5 +1,4 @@
 import { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 class App extends Component {
@@ -9,24 +8,34 @@ class App extends Component {
 
     // react is looking for this inside constructor
     this.state = {
-      name: 'Ashutosh'
+      monsters: [
+        {
+          name: 'Linda',
+          id: 123,
+        },
+        {
+          name: 'Frank',
+          id: 1232,
+        },
+        {
+          name: 'Jacky',
+          id: 1236,
+        }
+      ]
     };
   }
 
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>Hello! {this.state.name}</p>
-          <button onClick={() => {
-            // react detects change by using javascript's underlying reference by memory for an object
-            // essentialy if we change this.state = 'some value', it still points to the same reference and react doesn't think it as a change
-            // that means there should be a different object altogether - ex. Object.assign
-            // setState is the answer, it shallow merges the current state
-            this.setState({name: 'Vishal'})
-          }}>Change Name</button>
-        </header>
+        {this.state.monsters.map(monster => (
+          // should have a key property - some unique value(most of the time it would be id)
+          // key is used by react to optimise rerendering
+          // it differentiates different elements
+          // such that it identifies uniquely if something is changed
+          // so that only that particular html element is rerendered
+          <h1 key={monster.id}>{monster.name}</h1>
+        ))}
       </div>
     );
   }
