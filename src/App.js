@@ -8,21 +8,27 @@ class App extends Component {
 
     // react is looking for this inside constructor
     this.state = {
-      monsters: [
-        {
-          name: 'Linda',
-          id: 123,
-        },
-        {
-          name: 'Frank',
-          id: 1232,
-        },
-        {
-          name: 'Jacky',
-          id: 1236,
-        }
-      ]
+      monsters: [],
     };
+  }
+
+  componentDidMount() {
+    // Mounting is - the first time the component gets placed onto the DOM
+    // OR The first time react renders the component onto the page
+    // Only happens once in the component lifecycle
+    // remount only happens after unmount
+
+    // api calls are placed here
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((users) =>
+        this.setState(
+          () => {
+            return { monsters: users };
+          },
+          () => console.log(this.state)
+        )
+      );
   }
 
   render() {
