@@ -9,7 +9,7 @@ class App extends Component {
     // react is looking for this inside constructor
     this.state = {
       monsters: [],
-      searchString: '',
+      searchString: "",
     };
   }
 
@@ -25,16 +25,28 @@ class App extends Component {
       .then((users) =>
         this.setState(
           () => {
-            return { monsters: users, filteredMonsters: users, };
+            return { monsters: users, filteredMonsters: users };
           },
           () => console.log(this.state)
         )
       );
   }
 
+  onSearchChange = (event) => {
+    // this anonymous function is problematic because with every render it is thrown away and recreated
+    // every time we are re initializing it we are making our app less perfomant
+    const searchString = event.target.value.toLocaleLowerCase();
+    this.setState(() => {
+      return { searchString };
+    });
+  };
+
   render() {
-    const filteredMonsters = this.state.monsters.filter((monster) => {
-      return monster.name.toLocaleLowerCase().includes(this.state.searchString);
+    const { monsters, searchString } = this.state;
+    const { onSearchChange } = this;
+    // destructuring - makes it readable 
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLocaleLowerCase().includes(searchString);
     });
 
     return (
@@ -44,14 +56,7 @@ class App extends Component {
           className="search-box"
           type="search"
           placeholder="search monsters"
-          onChange={(event) => {
-            // this anonymous function is problematic because with every render it is thrown away and recreated
-            // every time we are re initializing it we are making our app less perfomant 
-            const searchString = event.target.value.toLocaleLowerCase();
-            this.setState(() => {
-              return { searchString };
-            });
-          }}
+          onChange={onSearchChange}
         />
         {filteredMonsters.map((monster) => (
           // should have a key property - some unique value(most of the time it would be id)
