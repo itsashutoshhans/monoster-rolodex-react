@@ -1,5 +1,7 @@
 import { Component } from "react";
 import "./App.css";
+import CardList from "./components/card-list/card-list.component";
+import SearchBox from "./components/search-box/search-box.component";
 
 class App extends Component {
   // Available on all the class components, it is run first whenever this app is constructed built or instantiated
@@ -44,7 +46,7 @@ class App extends Component {
   render() {
     const { monsters, searchString } = this.state;
     const { onSearchChange } = this;
-    // destructuring - makes it readable 
+    // destructuring - makes it readable
     const filteredMonsters = monsters.filter((monster) => {
       return monster.name.toLocaleLowerCase().includes(searchString);
     });
@@ -52,20 +54,18 @@ class App extends Component {
     return (
       <div className="App">
         {/* input looks like the html but it is a react component inside, because react allows us to bind functionality with the UI - also same goes with html properties or attributes */}
-        <input
+        {/* <input
           className="search-box"
           type="search"
           placeholder="search monsters"
           onChange={onSearchChange}
+        /> */}
+        <SearchBox
+          onChangeHandler={onSearchChange}
+          className="search-box"
+          placeholder="search monsters"
         />
-        {filteredMonsters.map((monster) => (
-          // should have a key property - some unique value(most of the time it would be id)
-          // key is used by react to optimise rerendering
-          // it differentiates different elements
-          // such that it identifies uniquely if something is changed
-          // so that only that particular html element is rerendered
-          <h1 key={monster.id}>{monster.name}</h1>
-        ))}
+        <CardList monsters={filteredMonsters} />
       </div>
     );
   }
